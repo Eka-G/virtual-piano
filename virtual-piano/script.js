@@ -23,6 +23,7 @@ function playAudio(event) {
 }
 
 function playAudioDrag(event) {
+  playAudio(event);
   const activeListener = event => playAudio(event);
   piano.addEventListener("mouseover", activeListener);
   document.addEventListener("mouseup", () => piano.removeEventListener("mouseover", activeListener), { once: true });
