@@ -3,20 +3,9 @@
 const piano = document.querySelector(".piano");
 const pianoKeys = document.querySelectorAll(".piano-key");
 const buttons = document.querySelector(".btn-container");
-
+const fullscreenButton = document.querySelector(".fullscreen");
+const body = document.querySelector("body");
 const audio = new Audio();
-const audioA = document.querySelector(".audio-a");
-const audioA1 = document.querySelector(".audio-a1");
-const audioB = document.querySelector(".audio-b");
-const audioC = document.querySelector(".audio-c");
-const audioC1 = document.querySelector(".audio-c1");
-const audioD = document.querySelector(".audio-d");
-const audioD1 = document.querySelector(".audio-d1");
-const audioE = document.querySelector(".audio-e");
-const audioF = document.querySelector(".audio-f");
-const audioF1 = document.querySelector(".audio-f1");
-const audioG = document.querySelector(".audio-g");
-const audioG1 = document.querySelector(".audio-g1");
 
 function makeActive(elem) {
   elem.classList.toggle("piano-key-active");
@@ -60,6 +49,13 @@ function changeLayout(event) {
   }
 }
 
+function toggleFullScreen(event) {
+  document.fullscreenElement ?
+    document.exitFullscreen() :
+    body.requestFullscreen();
+}
+
 piano.addEventListener("click", event => playAudio(event));
 buttons.addEventListener("click", event => changeLayout(event));
 document.addEventListener("keydown", event => playAudioButtons(event));
+fullscreenButton.addEventListener("click", event => toggleFullScreen(event));
