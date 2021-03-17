@@ -1,6 +1,9 @@
 "use strict";
 
 const piano = document.querySelector(".piano");
+const pianoKeys = document.querySelectorAll(".piano-key");
+const buttons = document.querySelector(".btn-container");
+
 const audioA = document.querySelector(".audio-a");
 const audioA1 = document.querySelector(".audio-a1");
 const audioB = document.querySelector(".audio-b");
@@ -71,4 +74,19 @@ function playAudio(event) {
   }
 }
 
+function chacgeLayout(event) {
+  if (event.target.classList.contains("btn")) {
+    event.target.classList.toggle("btn-active");
+
+    event.target.nextElementSibling ?
+      event.target.nextElementSibling.classList.toggle("btn-active") :
+      event.target.previousElementSibling.classList.toggle("btn-active");
+
+    for (let key of pianoKeys) {
+      key.classList.toggle("piano-key-letter");
+    }
+  }
+}
+
 piano.addEventListener("click", event => playAudio(event));
+buttons.addEventListener("click", event => chacgeLayout(event))

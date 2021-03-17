@@ -142,8 +142,12 @@ body {
 	left: 20px;
 	transition: 0.3s;
 }
-.piano-key::after {
+
+.piano-key-letter::before {
 	display: none;
+}
+
+.piano-key-letter::after {
 	content: attr(data-letter);
 }
 .piano-key:hover::before,
