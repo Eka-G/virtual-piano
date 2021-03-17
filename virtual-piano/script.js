@@ -21,7 +21,9 @@ const audioG1 = document.querySelector(".audio-g1");
 function playAudio(event) {
   if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
     event.target.classList.toggle("piano-key-active");
+    event.target.classList.toggle("piano-key-active-pseudo");
     setTimeout(() => event.target.classList.toggle("piano-key-active"), 200)
+    setTimeout(() => event.target.classList.toggle("piano-key-active-pseudo"), 200)
     switch (event.target.dataset.note) {
       case "a":
         audioA.play();
@@ -74,7 +76,7 @@ function playAudio(event) {
   }
 }
 
-function chacgeLayout(event) {
+function changeLayout(event) {
   if (event.target.classList.contains("btn")) {
     event.target.classList.toggle("btn-active");
 
@@ -89,4 +91,4 @@ function chacgeLayout(event) {
 }
 
 piano.addEventListener("click", event => playAudio(event));
-buttons.addEventListener("click", event => chacgeLayout(event))
+buttons.addEventListener("click", event => changeLayout(event));
