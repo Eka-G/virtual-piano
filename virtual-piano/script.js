@@ -4,6 +4,7 @@ const piano = document.querySelector(".piano");
 const pianoKeys = document.querySelectorAll(".piano-key");
 const buttons = document.querySelector(".btn-container");
 
+const audio = new Audio();
 const audioA = document.querySelector(".audio-a");
 const audioA1 = document.querySelector(".audio-a1");
 const audioB = document.querySelector(".audio-b");
@@ -17,61 +18,30 @@ const audioF1 = document.querySelector(".audio-f1");
 const audioG = document.querySelector(".audio-g");
 const audioG1 = document.querySelector(".audio-g1");
 
+function makeActive(elem) {
+  elem.classList.toggle("piano-key-active");
+  elem.classList.toggle("piano-key-active-pseudo");
+  setTimeout(() => elem.classList.toggle("piano-key-active"), 200)
+  setTimeout(() => elem.classList.toggle("piano-key-active-pseudo"), 200)
+}
 
 function playAudio(event) {
   if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
-    event.target.classList.toggle("piano-key-active");
-    event.target.classList.toggle("piano-key-active-pseudo");
-    setTimeout(() => event.target.classList.toggle("piano-key-active"), 200)
-    setTimeout(() => event.target.classList.toggle("piano-key-active-pseudo"), 200)
-    switch (event.target.dataset.note) {
-      case "a":
-        audioA.play();
-        break;
+    makeActive(event.target)
+    audio.src = "assets/audio/" + event.target.dataset.note + ".mp3";
+    audio.play();
+  }
+}
 
-      case "a♯":
-        audioA1.play();
-        break;
+function playAudioButtons(event) {
+  if (event.code.substr(0, 3) === "Key") {
+    for (let key of pianoKeys) {
 
-      case "b":
-        audioB.play();
-        break;
-
-      case "c":
-        audioC.play();
-        break;
-
-      case "c♯":
-        audioC1.play();
-        break;
-
-      case "d":
-        audioD.play();
-        break;
-
-      case "d♯":
-        audioD1.play();
-        break;
-
-      case "e":
-        audioE.play();
-        break;
-
-      case "f":
-        audioF.play();
-        break;
-
-      case "f♯":
-        audioF1.play();
-        break;
-
-      case "g":
-        audioG.play();
-        break;
-
-      case "g♯":
-        audioG1.play();
-        break;
+      if (key.dataset.letter === event.code[3]) {
+        makeActive(key);
+        audio.src = "assets/audio/" + key.dataset.note + ".mp3";
+        audio.play();
+      }
     }
   }
 }
@@ -92,3 +62,4 @@ function changeLayout(event) {
 
 piano.addEventListener("click", event => playAudio(event));
 buttons.addEventListener("click", event => changeLayout(event));
+document.addEventListener("keydown", event => playAudioButtons(event));
