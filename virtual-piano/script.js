@@ -5,7 +5,6 @@ const pianoKeys = document.querySelectorAll(".piano-key");
 const buttons = document.querySelector(".btn-container");
 const fullscreenButton = document.querySelector(".fullscreen");
 const body = document.querySelector("body");
-const audio = new Audio();
 
 function makeActive(elem) {
   elem.classList.toggle("piano-key-active");
@@ -15,6 +14,7 @@ function makeActive(elem) {
 }
 
 function playAudio(event) {
+  const audio = new Audio();
   if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
     makeActive(event.target)
     audio.src = "assets/audio/" + event.target.dataset.note + ".mp3";
