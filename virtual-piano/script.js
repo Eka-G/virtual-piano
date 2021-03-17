@@ -22,6 +22,12 @@ function playAudio(event) {
   }
 }
 
+function playAudioDrag(event) {
+  const activeListener = event => playAudio(event);
+  piano.addEventListener("mouseover", activeListener);
+  document.addEventListener("mouseup", () => piano.removeEventListener("mouseover", activeListener), { once: true });
+}
+
 function playAudioButtons(event) {
   if (event.code.substr(0, 3) === "Key") {
     for (let key of pianoKeys) {
@@ -56,6 +62,7 @@ function toggleFullScreen(event) {
 }
 
 piano.addEventListener("click", event => playAudio(event));
+piano.addEventListener("mousedown", event => playAudioDrag(event));
 buttons.addEventListener("click", event => changeLayout(event));
 document.addEventListener("keydown", event => playAudioButtons(event));
 fullscreenButton.addEventListener("click", event => toggleFullScreen(event));
