@@ -16,8 +16,8 @@ function makeActive(elem) {
 }
 
 function playAudio(event) {
-  const audio = new Audio();
   if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
+    const audio = new Audio();
     makeActive(event.target)
     audio.src = "assets/audio/" + event.target.dataset.note + ".mp3";
     audio.play();
@@ -35,16 +35,18 @@ function playAudioDrag(event) {
 }
 
 function playAudioButtons(event) {
-  if (event.code.substr(0, 3) === "Key") {
-    for (let key of pianoKeys) {
+  if (event.code.substr(0, 3) === "Key" && !event.repeat) {
 
+    for (let key of pianoKeys) {
       if (key.dataset.letter === event.code[3]) {
+        const audio = new Audio();
         makeActive(key);
         audio.src = "assets/audio/" + key.dataset.note + ".mp3";
         audio.play();
       }
     }
   }
+
 }
 
 function changeLayout(event) {
