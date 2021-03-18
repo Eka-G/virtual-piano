@@ -6,6 +6,8 @@ const buttons = document.querySelector(".btn-container");
 const fullscreenButton = document.querySelector(".fullscreen");
 const body = document.querySelector("body");
 
+const activeListener = event => playAudio(event);
+
 function makeActive(elem) {
   elem.classList.toggle("piano-key-active");
   elem.classList.toggle("piano-key-active-pseudo");
@@ -24,9 +26,12 @@ function playAudio(event) {
 
 function playAudioDrag(event) {
   playAudio(event);
-  const activeListener = event => playAudio(event);
+
   piano.addEventListener("mouseover", activeListener);
-  document.addEventListener("mouseup", () => piano.removeEventListener("mouseover", activeListener), { once: true });
+  document.addEventListener("mouseup", () => {
+    piano.removeEventListener("mouseover", activeListener);
+    piano.removeEventListener("click", activeListener)
+  }, { once: true });
 }
 
 function playAudioButtons(event) {
@@ -62,7 +67,7 @@ function toggleFullScreen(event) {
     body.requestFullscreen();
 }
 
-piano.addEventListener("click", event => playAudio(event));
+piano.addEventListener("click", activeListener);
 piano.addEventListener("mousedown", event => playAudioDrag(event));
 buttons.addEventListener("click", event => changeLayout(event));
 document.addEventListener("keydown", event => playAudioButtons(event));
