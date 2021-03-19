@@ -31,7 +31,9 @@ function playSound(event) {
 
   piano.addEventListener("mouseover", chancgeKey);
   document.addEventListener("mouseup", () => {
-    lastKey ? toggleActive(lastKey) : toggleActive(event.target);
+    if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
+      lastKey ? toggleActive(lastKey) : toggleActive(event.target);
+    }
     piano.removeEventListener("mouseover", chancgeKey);
   }, { once: true });
 }
