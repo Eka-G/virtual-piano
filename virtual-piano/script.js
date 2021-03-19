@@ -6,51 +6,48 @@ const buttons = document.querySelector(".btn-container");
 const fullscreenButton = document.querySelector(".fullscreen");
 const body = document.querySelector("body");
 
-const activeListener = event => playAudio(event);
-
-function makeActive(elem) {
+function toggleActive(elem) {
   elem.classList.toggle("piano-key-active");
   elem.classList.toggle("piano-key-active-pseudo");
 }
 
-function playAudio(event) {
+function makeAudio(event) {
   if (!event.target.classList.contains("piano") && 0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
     const audio = new Audio();
-    makeActive(event.target);
+    toggleActive(event.target);
     audio.src = "assets/audio/" + event.target.dataset.note + ".mp3";
     audio.play();
   }
 }
 
-function playAudioDrag(event) {
+function playSound(event) {
   let lastKey;
-  playAudio(event);
+  makeAudio(event);
   const chancgeKey = function (event) {
-    playAudio(event);
+    makeAudio(event);
     lastKey = event.target;
-    if (!event.relatedTarget.classList.contains("piano")) makeActive(event.relatedTarget);
+    if (!event.relatedTarget.classList.contains("piano")) toggleActive(event.relatedTarget);
   }
 
   piano.addEventListener("mouseover", chancgeKey);
   document.addEventListener("mouseup", () => {
-    lastKey ? makeActive(lastKey) : makeActive(event.target);
+    lastKey ? toggleActive(lastKey) : toggleActive(event.target);
     piano.removeEventListener("mouseover", chancgeKey);
-    piano.removeEventListener("click", activeListener);
   }, { once: true });
 }
 
-function playAudioButtons(event) {
+function playSoundButtons(event) {
   if (event.code.substr(0, 3) === "Key" && !event.repeat) {
 
     for (let key of pianoKeys) {
       if (key.dataset.letter === event.code[3]) {
         const audio = new Audio();
-        makeActive(key);
+        toggleActive(key);
         audio.src = "assets/audio/" + key.dataset.note + ".mp3";
         audio.play();
 
         document.addEventListener("keyup", () => {
-          makeActive(key);
+          toggleActive(key);
         }, { once: true });
       }
     }
@@ -78,7 +75,7 @@ function toggleFullScreen(event) {
     body.requestFullscreen();
 }
 
-piano.addEventListener("mousedown", event => playAudioDrag(event));
+piano.addEventListener("mousedown", event => playSound(event));
 buttons.addEventListener("click", event => changeLayout(event));
-document.addEventListener("keydown", event => playAudioButtons(event));
+document.addEventListener("keydown", event => playSoundButtons(event));
 fullscreenButton.addEventListener("click", event => toggleFullScreen(event));
