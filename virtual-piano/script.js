@@ -11,26 +11,31 @@ const activeListener = event => playAudio(event);
 function makeActive(elem) {
   elem.classList.toggle("piano-key-active");
   elem.classList.toggle("piano-key-active-pseudo");
-  setTimeout(() => elem.classList.toggle("piano-key-active"), 200)
-  setTimeout(() => elem.classList.toggle("piano-key-active-pseudo"), 200)
 }
 
 function playAudio(event) {
-  if (0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
+  if (!event.target.classList.contains("piano") && 0 <= event.offsetY && event.offsetY < event.target.offsetHeight) {
     const audio = new Audio();
-    makeActive(event.target)
+    makeActive(event.target);
     audio.src = "assets/audio/" + event.target.dataset.note + ".mp3";
     audio.play();
   }
 }
 
 function playAudioDrag(event) {
+  let lastKey;
   playAudio(event);
+  const chancgeKey = function (event) {
+    playAudio(event);
+    lastKey = event.target;
+    if (!event.relatedTarget.classList.contains("piano")) makeActive(event.relatedTarget);
+  }
 
-  piano.addEventListener("mouseover", activeListener);
+  piano.addEventListener("mouseover", chancgeKey);
   document.addEventListener("mouseup", () => {
-    piano.removeEventListener("mouseover", activeListener);
-    piano.removeEventListener("click", activeListener)
+    lastKey ? makeActive(lastKey) : makeActive(event.target);
+    piano.removeEventListener("mouseover", chancgeKey);
+    piano.removeEventListener("click", activeListener);
   }, { once: true });
 }
 
@@ -43,6 +48,10 @@ function playAudioButtons(event) {
         makeActive(key);
         audio.src = "assets/audio/" + key.dataset.note + ".mp3";
         audio.play();
+
+        document.addEventListener("keyup", () => {
+          makeActive(key);
+        }, { once: true });
       }
     }
   }
@@ -69,7 +78,6 @@ function toggleFullScreen(event) {
     body.requestFullscreen();
 }
 
-piano.addEventListener("click", activeListener);
 piano.addEventListener("mousedown", event => playAudioDrag(event));
 buttons.addEventListener("click", event => changeLayout(event));
 document.addEventListener("keydown", event => playAudioButtons(event));
