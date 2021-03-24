@@ -58,7 +58,7 @@ function playSoundButtons(event) {
 }
 
 function changeLayout(event) {
-  if (event.target.classList.contains("btn")) {
+  if (event.target.classList.contains("btn") && !event.target.classList.contains("btn-active")) {
     event.target.classList.toggle("btn-active");
 
     event.target.nextElementSibling ?
